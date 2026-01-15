@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday ✨</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Patrick+Hand&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg1: #070a1a;
+        --bg2: #0c1b3a;
+        --card: rgba(255, 255, 255, 0.08);
+        --stroke: rgba(255, 255, 255, 0.16);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.72);
+        --accent: #a7c7ff;
+        --accent2: #cdb4ff;
+        --gold: #ffdca8;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+        --radius: 22px;
+        --marquee-speed: 50s;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Quicksand", system-ui, -apple-system, Segoe UI, Roboto,
+          sans-serif;
+        color: var(--text);
+        overflow-x: hidden;
+        background: radial-gradient(
+            1200px 900px at 20% 10%,
+            rgba(167, 199, 255, 0.18),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 700px at 80% 30%,
+            rgba(205, 180, 255, 0.18),
+            transparent 55%
+          ),
+          linear-gradient(160deg, var(--bg1), var(--bg2));
+        min-height: 100vh;
+        position: relative;
+      }
+      .music-btn {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        z-index: 120;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.92);
+        padding: 12px 14px;
+        border-radius: 999px;
+        font-weight: 800;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+        transition: transform 0.18s ease, filter 0.18s ease,
+          background 0.18s ease;
+      }
+      .music-btn:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.06);
+        background: rgba(255, 255, 255, 0.14);
+      }
+      .music-btn:active {
+        transform: translateY(1px);
+      }
+
+      canvas#stars {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+      }
+
+      .glow {
+        position: fixed;
+        inset: -40%;
+        z-index: -3;
+        background: radial-gradient(
+          circle at 50% 35%,
+          rgba(255, 255, 255, 0.06),
+          transparent 55%
+        );
+        filter: blur(30px);
+      }
+
+      /* confetti */
+      .confetti {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 50;
+        overflow: hidden;
+      }
+      .confetti span {
+        position: absolute;
+        top: -20px;
+        width: 10px;
+        height: 16px;
+        border-radius: 4px;
+        opacity: 0.85;
+        animation: fall linear infinite;
+        transform: translateY(-20px) rotate(0deg);
+      }
+      @keyframes fall {
+        to {
+          transform: translateY(calc(100vh + 40px)) rotate(540deg);
+        }
+      }
+
+      .wrap {
+        width: min(1100px, 92vw);
+        margin: 0 auto;
+        padding: 28px 0 90px;
+      }
+
+      header {
+        padding: 38px 0 10px;
+        text-align: center;
+      }
+      .title {
+        font-size: clamp(30px, 4.4vw, 56px);
+        letter-spacing: 0.5px;
+        margin: 0;
+        font-weight: 800;
+        text-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+      }
+      .subtitle {
+        margin: 10px auto 0;
+        max-width: 720px;
+        color: var(--muted);
+        font-size: clamp(14px, 2vw, 18px);
+        line-height: 1.5;
+      }
+
+      /* marquee */
+      .marquee {
+        margin: 22px auto 28px;
+        width: 100%;
+        overflow: hidden;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 999px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        position: relative;
+      }
+      .marquee-track {
+        display: flex;
+        width: max-content;
+        gap: 28px;
+        padding: 12px 0;
+        animation: run var(--marquee-speed) linear infinite;
+      }
+
+      .marquee:hover .marquee-track {
+        animation-play-state: paused;
+      }
+      @keyframes run {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 700;
+        white-space: nowrap;
+        letter-spacing: 0.2px;
+      }
+      .chip b {
+        color: var(--gold);
+      }
+
+      /* grid */
+      .grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 22px;
+      }
+      @media (max-width: 880px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        border: 1px solid var(--stroke);
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+        position: relative;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(
+            600px 220px at 20% 0%,
+            rgba(167, 199, 255, 0.22),
+            transparent 60%
+          ),
+          radial-gradient(
+            520px 220px at 80% 0%,
+            rgba(205, 180, 255, 0.2),
+            transparent 60%
+          );
+        z-index: 0;
+        opacity: 0.7;
+      }
+      .card > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* sparkles */
+      .spark {
+        position: fixed;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.85);
+        filter: blur(0.2px);
+        opacity: 0.9;
+        z-index: -1;
+        animation: float 6s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.75;
+        }
+        50% {
+          transform: translateY(-14px);
+          opacity: 1;
+        }
+      }
+
+      /* cake section */
+      .cake-area {
+        padding: 22px 22px 18px;
+      }
+      .cake-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 12px;
+      }
+      .cake-head h2 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: 0.2px;
+      }
+      .hint {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .btn {
+        border: none;
+        cursor: pointer;
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-weight: 800;
+        color: #0b1226;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        box-shadow: 0 18px 50px rgba(167, 199, 255, 0.25);
+        transition: transform 0.18s ease, filter 0.18s ease;
+        user-select: none;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.05);
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .cake-wrap {
+        display: grid;
+        place-items: center;
+        padding: 10px 10px 18px;
+      }
+      .cake {
+        width: min(420px, 100%);
+        height: auto;
+        filter: drop-shadow(0 16px 45px rgba(0, 0, 0, 0.45));
+      }
+
+      /* candles */
+      .flame {
+        transition: opacity 0.35s ease, transform 0.35s ease;
+        transform-origin: center;
+      }
+      .flame.off {
+        opacity: 0;
+        transform: translateY(8px) scale(0.7);
+      }
+
+      /* letter */
+      .letter-area {
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .letter-area h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+      .note {
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px dashed rgba(255, 255, 255, 0.24);
+        padding: 18px 16px;
+        position: relative;
+        overflow: hidden;
+      }
+      .note::after {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        background: radial-gradient(
+            10px 10px at 15% 25%,
+            rgba(255, 255, 255, 0.24),
+            transparent 60%
+          ),
+          radial-gradient(
+            12px 12px at 70% 20%,
+            rgba(255, 220, 168, 0.18),
+            transparent 62%
+          ),
+          radial-gradient(
+            10px 10px at 82% 65%,
+            rgba(205, 180, 255, 0.18),
+            transparent 60%
+          );
+        pointer-events: none;
+        opacity: 0.9;
+      }
+      .typing {
+        font-family: "Patrick Hand", cursive;
+        font-size: 19px;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.93);
+        min-height: 160px;
+        white-space: pre-line;
+      }
+      .note small {
+        display: block;
+        margin-top: 14px;
+        color: rgba(255, 255, 255, 0.65);
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      /* slider */
+      .slider {
+        margin-top: 22px;
+        padding: 18px 0 8px;
+      }
+      .slider h3 {
+        margin: 0 0 12px;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.88);
+        text-align: center;
+        letter-spacing: 0.2px;
+      }
+      .track {
+        display: flex;
+        gap: 14px;
+        overflow: hidden;
+        padding: 10px 14px;
+        position: relative;
+      }
+      .track-inner {
+        display: flex;
+        gap: 14px;
+        width: max-content;
+        animation: scroll 42s linear infinite;
+      }
+      .track:hover .track-inner {
+        animation-play-state: paused;
+      }
+      @keyframes scroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      .photo {
+        width: 210px;
+        height: 140px;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(0, 0, 0, 0.15);
+        position: relative;
+        flex: 0 0 auto;
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+      }
+      .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: saturate(1.05) contrast(1.02);
+        transform: scale(1.02);
+      }
+      .photo::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.35),
+          transparent 60%
+        );
+        opacity: 0.75;
+      }
+
+      footer {
+        margin-top: 36px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.72);
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      footer span {
+        color: var(--gold);
+      }
+
+      /* modal */
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        place-items: center;
+        z-index: 100;
+        padding: 18px;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(8px);
+      }
+      .modal.show {
+        display: grid;
+      }
+      .modal-box {
+        width: min(520px, 92vw);
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(13, 21, 48, 0.85);
+        box-shadow: 0 40px 120px rgba(0, 0, 0, 0.65);
+        padding: 18px 18px 16px;
+        position: relative;
+        overflow: hidden;
+      }
+      .modal-box::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(
+            500px 240px at 20% 10%,
+            rgba(167, 199, 255, 0.25),
+            transparent 55%
+          ),
+          radial-gradient(
+            520px 260px at 80% 30%,
+            rgba(205, 180, 255, 0.18),
+            transparent 58%
+          );
+        opacity: 0.8;
+      }
+      .modal-box > * {
+        position: relative;
+        z-index: 1;
+      }
+      .modal-box h4 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .modal-box p {
+        margin: 8px 0 14px;
+        color: rgba(255, 255, 255, 0.75);
+        line-height: 1.55;
+      }
+      .close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 20px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- music -->
+    <audio id="bgMusic" src="./birthday.mp3" preload="auto" loop></audio>
+
+    <button id="musicBtn" class="music-btn" aria-label="music button">
+      🎵 Bật nhạc
+    </button>
+    <div class="glow"></div>
+    <canvas id="stars"></canvas>
+    <div class="confetti" id="confetti"></div>
+
+    <!-- sparkles -->
+    <div class="spark" style="left: 8%; top: 18%; animation-delay: 0s"></div>
+    <div class="spark" style="left: 18%; top: 72%; animation-delay: 1.3s"></div>
+    <div class="spark" style="left: 86%; top: 22%; animation-delay: 0.6s"></div>
+    <div class="spark" style="left: 77%; top: 78%; animation-delay: 2s"></div>
+
+    <div class="wrap">
+      <header>
+        <h1 class="title">Happy Birthday 🎂 <span id="name">TênCậuẤy</span></h1>
+        <p class="subtitle">
+          Chúc cậu một tuổi mới thật rực rỡ như bầu trời đêm ✨<br />
+          Mong mọi điều dịu dàng luôn tìm đến cậu 🌙
+        </p>
+      </header>
+
+      <!-- marquee -->
+      <section class="marquee" aria-label="birthday marquee">
+        <div class="marquee-track" id="marqueeTrack"></div>
+      </section>
+
+      <!-- stats + wishes -->
+      <section
+        class="card stats"
+        style="margin: 0 auto 22px; padding: 18px 18px 12px"
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            flex-wrap: wrap;
+          "
+        >
+          <div>
+            <h2 style="margin: 0; font-size: 20px">
+              🌟 Một vài điều nhỏ về cậu
+            </h2>
+            <p
+              style="
+                margin: 8px 0 0;
+                color: rgba(255, 255, 255, 0.72);
+                line-height: 1.5;
+              "
+            >
+              Có thể cậu không để ý… nhưng hôm nay cậu vẫn đang tiến lên rất tốt
+              ✨
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap">
+            <div class="chip">
+              ✨ Cậu đã làm cuộc sống này dịu dàng hơn:
+              <b id="daysLived">0</b> ngày
+            </div>
+            <div class="chip">🎂 Sinh nhật: <b id="bdayCountdown">0</b></div>
+            <div class="chip">
+              📚 Thi tốt nghiệp: <b id="examCountdown">0</b>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            padding-top: 12px;
+          "
+        >
+          <h3
+            style="
+              margin: 0 0 10px;
+              font-size: 16px;
+              color: rgba(255, 255, 255, 0.88);
+              text-align: center;
+            "
+          >
+            🎯 Mục tiêu năm nay của cậu là gì?
+          </h3>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 12px;
+            "
+          >
+            <div class="note" style="min-height: auto">
+              <div style="font-weight: 800; margin-bottom: 6px">NV1</div>
+              <div id="nv1" style="color: rgba(255, 255, 255, 0.82)">—</div>
+            </div>
+            <div class="note" style="min-height: auto">
+              <div style="font-weight: 800; margin-bottom: 6px">NV2</div>
+              <div id="nv2" style="color: rgba(255, 255, 255, 0.82)">—</div>
+            </div>
+            <div class="note" style="min-height: auto">
+              <div style="font-weight: 800; margin-bottom: 6px">NV3</div>
+              <div id="nv3" style="color: rgba(255, 255, 255, 0.82)">—</div>
+            </div>
+          </div>
+
+          <p
+            style="
+              margin: 12px 0 0;
+              text-align: center;
+              color: rgba(255, 255, 255, 0.72);
+              font-weight: 700;
+            "
+          >
+            “Dù nguyện vọng của cậu là gì, chúc cậu sẽ luôn thực hiện được. Cố
+            lên nha, còn một đoạn nữa thôi.” 🌙
+          </p>
+        </div>
+      </section>
+
+      <section class="grid">
+        <!-- cake -->
+        <div class="card">
+          <div class="cake-area">
+            <div class="cake-head">
+              <div>
+                <h2>🎂 Thổi nến nào!</h2>
+                <p class="hint">
+                  Bấm nút “Thổi nến 🕯️” để tắt nến và nhận một chút phép màu ✨
+                </p>
+              </div>
+              <button class="btn" id="blowBtn">Thổi nến 🕯️</button>
+            </div>
+          </div>
+
+          <div class="cake-wrap">
+            <svg
+              class="cake"
+              viewBox="0 0 540 360"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="cream" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#F7F2FF" />
+                  <stop offset="1" stop-color="#DCEBFF" />
+                </linearGradient>
+                <linearGradient id="cakeBody" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#8FB5FF" />
+                  <stop offset="1" stop-color="#CDB4FF" />
+                </linearGradient>
+              </defs>
+
+              <ellipse
+                cx="270"
+                cy="310"
+                rx="210"
+                ry="28"
+                fill="rgba(255,255,255,.18)"
+              />
+              <ellipse
+                cx="270"
+                cy="312"
+                rx="170"
+                ry="18"
+                fill="rgba(0,0,0,.18)"
+              />
+
+              <rect
+                x="130"
+                y="165"
+                width="280"
+                height="140"
+                rx="32"
+                fill="url(#cakeBody)"
+                opacity=".95"
+              />
+              <rect
+                x="145"
+                y="185"
+                width="250"
+                height="110"
+                rx="28"
+                fill="rgba(0,0,0,.08)"
+              />
+
+              <path
+                d="M145 175 C160 155, 200 155, 215 175 C230 155, 270 155, 285 175 C300 155, 340 155, 355 175 C370 155, 395 155, 410 175 L410 205 C395 220, 370 210, 355 226 C340 210, 300 210, 285 226 C270 210, 230 210, 215 226 C200 210, 160 220, 145 205 Z"
+                fill="url(#cream)"
+                opacity=".96"
+              />
+
+              <g opacity=".9">
+                <circle cx="200" cy="205" r="4" fill="#FFDCA8" />
+                <circle cx="240" cy="190" r="4" fill="#A7C7FF" />
+                <circle cx="310" cy="198" r="4" fill="#CDB4FF" />
+                <circle cx="360" cy="210" r="4" fill="#FFDCA8" />
+                <circle cx="275" cy="186" r="4" fill="#FFFFFF" />
+              </g>
+
+              <g id="candles">
+                <rect
+                  x="220"
+                  y="95"
+                  width="22"
+                  height="70"
+                  rx="10"
+                  fill="#FFDCA8"
+                />
+                <rect
+                  x="220"
+                  y="115"
+                  width="22"
+                  height="8"
+                  rx="4"
+                  fill="rgba(0,0,0,.12)"
+                />
+                <ellipse
+                  cx="231"
+                  cy="95"
+                  rx="11"
+                  ry="6"
+                  fill="rgba(255,255,255,.35)"
+                />
+                <path
+                  class="flame"
+                  id="flame1"
+                  d="M231 55 C223 70, 224 82, 231 90 C238 82, 239 70, 231 55 Z"
+                  fill="#FFE9A8"
+                />
+                <circle
+                  class="flame"
+                  id="flame1a"
+                  cx="231"
+                  cy="78"
+                  r="6"
+                  fill="#FFD27A"
+                />
+
+                <rect
+                  x="260"
+                  y="85"
+                  width="22"
+                  height="80"
+                  rx="10"
+                  fill="#A7C7FF"
+                />
+                <rect
+                  x="260"
+                  y="110"
+                  width="22"
+                  height="8"
+                  rx="4"
+                  fill="rgba(0,0,0,.12)"
+                />
+                <ellipse
+                  cx="271"
+                  cy="85"
+                  rx="11"
+                  ry="6"
+                  fill="rgba(255,255,255,.35)"
+                />
+                <path
+                  class="flame"
+                  id="flame2"
+                  d="M271 45 C263 62, 264 76, 271 85 C278 76, 279 62, 271 45 Z"
+                  fill="#FFE9A8"
+                />
+                <circle
+                  class="flame"
+                  id="flame2a"
+                  cx="271"
+                  cy="73"
+                  r="6"
+                  fill="#FFD27A"
+                />
+
+                <rect
+                  x="300"
+                  y="95"
+                  width="22"
+                  height="70"
+                  rx="10"
+                  fill="#CDB4FF"
+                />
+                <rect
+                  x="300"
+                  y="115"
+                  width="22"
+                  height="8"
+                  rx="4"
+                  fill="rgba(0,0,0,.12)"
+                />
+                <ellipse
+                  cx="311"
+                  cy="95"
+                  rx="11"
+                  ry="6"
+                  fill="rgba(255,255,255,.35)"
+                />
+                <path
+                  class="flame"
+                  id="flame3"
+                  d="M311 55 C303 70, 304 82, 311 90 C318 82, 319 70, 311 55 Z"
+                  fill="#FFE9A8"
+                />
+                <circle
+                  class="flame"
+                  id="flame3a"
+                  cx="311"
+                  cy="78"
+                  r="6"
+                  fill="#FFD27A"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- letter -->
+        <div class="card">
+          <div class="letter-area">
+            <h2>💌 Một bức thư nhỏ</h2>
+            <div class="note">
+              <div class="typing" id="typingArea">
+                Bấm “Mở thư 💌” để đọc nha…
+              </div>
+              <small id="signature"></small>
+            </div>
+            <button class="btn" id="openLetterBtn">Mở thư 💌</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="slider">
+        <h3>🍬 Một vài khoảnh khắc nhỏ…</h3>
+        <div class="track">
+          <div class="track-inner" id="trackInner"></div>
+        </div>
+      </section>
+
+      <footer>🌙 <span>Từ một người luôn trân trọng cậu.</span></footer>
+    </div>
+
+    <!-- modal -->
+    <div class="modal" id="modal">
+      <div class="modal-box">
+        <button class="close" id="closeModal">×</button>
+        <h4>✨ Cậu hãy ước một điều nha</h4>
+        <p>
+          Hy vọng tuổi mới của cậu sẽ có thật nhiều niềm vui, bình an và những
+          điều tốt đẹp. Chúc cậu luôn rực rỡ theo cách của riêng mình 🌟
+        </p>
+        <button class="btn" id="okModal">Oke luôn 😄</button>
+      </div>
+    </div>
+
+    <script>
+      // ====== CONFIG ======
+      const BOY_NAME = "Nguyễn Minh Hoàng"; // sửa tên
+      const BIRTHDAY = "2008-01-16"; // sinh nhật
+      const EXAM_DATE = "2026-06-26"; // sửa theo lịch thi
+
+      const WISHLIST = {
+        nv1: "Đỗ tốt nghiệp với kết quả thật tốt 📚",
+        nv2: "Vào được môi trường phù hợp với mình ✨",
+        nv3: "Giữ sức khỏe & luôn vui mỗi ngày 🌙",
+      };
+
+      const MARQUEE_TEXTS = [
+        "🎂 HAPPY BIRTHDAY 🎂",
+        "✨ Chúc cậu một ngày thật rực rỡ ✨",
+        "🌙 Mong mọi điều dịu dàng luôn tìm đến cậu",
+        "🧁 Sinh nhật vui vẻ nha!",
+        "🌟 Hôm nay là ngày đặc biệt của cậu",
+        "🎉 Chúc cậu cười thật nhiều hôm nay",
+        "💫 Tuổi mới nhiều may mắn và bình an",
+        "🎈 Mọi điều tốt đẹp đang đến gần",
+        "🌠 Rực rỡ theo cách của riêng cậu",
+        "📚 Cố lên nha, sắp tới đích rồi!",
+        "🌿 Bình tĩnh — rồi mọi thứ sẽ ổn",
+        "✨ Chúc cậu luôn giữ được ánh mắt đầy hy vọng",
+        "🫶 Chúc cậu luôn gặp người tốt",
+        "🌙 Đêm nay trời đẹp, chúc cậu ngủ ngon",
+        "🌟 Chúc cậu luôn tự tin và vững vàng",
+        "🎁 Một tuổi mới, một hành trình mới",
+        "💛 Thật nhiều niềm vui nhỏ bé mỗi ngày",
+        "🌈 Mong ngày mai của cậu luôn sáng",
+        "🎂 HAPPY BIRTHDAY 🎂",
+        "✨ Một ngày đáng nhớ nhé ✨",
+      ];
+
+      const LETTER_TEXT = [
+        "Chúc mừng sinh nhật cậu ✨",
+        "",
+        "Mong tuổi mới của cậu sẽ thật nhẹ nhàng và rực rỡ.",
+        "Mong cậu luôn giữ được nụ cười và sự bình yên trong lòng.",
+        "Dù bận rộn thế nào, cũng nhớ chăm sóc bản thân thật tốt nha.",
+        "",
+        "Cảm ơn vì đã xuất hiện — khiến mọi thứ tươi hơn một chút 🌙",
+        "",
+        "Sinh nhật vui vẻ!",
+      ].join("\n");
+
+      const SIGNATURE_TEXT = "Từ một người luôn trân trọng cậu.";
+
+      const IMAGES = [
+        "./images/memory-1.jpg",
+        "./images/memory-2.jpg",
+        "./images/memory-3.jpg",
+        "./images/memory-4.jpg",
+        "./images/memory-5.jpg",
+        "./images/memory-6.jpg",
+      ];
+
+      // ====== DATE HELPERS ======
+      function parseDateVN(yyyy_mm_dd) {
+        const [y, m, d] = yyyy_mm_dd.split("-").map(Number);
+        return new Date(y, m - 1, d);
+      }
+      function daysBetween(d1, d2) {
+        const a = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate());
+        const b = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
+        return Math.floor((b - a) / (1000 * 60 * 60 * 24));
+      }
+      function daysUntil(targetDate) {
+        const now = new Date();
+        const today = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate()
+        );
+        const t = new Date(
+          targetDate.getFullYear(),
+          targetDate.getMonth(),
+          targetDate.getDate()
+        );
+        return Math.ceil((t - today) / (1000 * 60 * 60 * 24));
+      }
+      function nextBirthday(birth) {
+        const now = new Date();
+        const year = now.getFullYear();
+        let next = new Date(year, birth.getMonth(), birth.getDate());
+        const today = new Date(year, now.getMonth(), now.getDate());
+        if (next < today)
+          next = new Date(year + 1, birth.getMonth(), birth.getDate());
+        return next;
+      }
+      function formatCountdownDays(n) {
+        if (n === 0) return "HÔM NAY 🎉";
+        if (n > 0) return `còn ${n} ngày`;
+        return "đã qua";
+      }
+
+      function updateStats() {
+        const birth = parseDateVN(BIRTHDAY);
+        const now = new Date();
+
+        const lived = daysBetween(birth, now);
+        document.getElementById("daysLived").textContent =
+          lived.toLocaleString("vi-VN");
+
+        const nb = nextBirthday(birth);
+        const dB = daysUntil(nb);
+        document.getElementById("bdayCountdown").textContent =
+          formatCountdownDays(dB);
+
+        const exam = parseDateVN(EXAM_DATE);
+        const dE = daysUntil(exam);
+        document.getElementById("examCountdown").textContent =
+          dE > 0 ? `còn ${dE} ngày` : dE === 0 ? "HÔM NAY 📚" : "đã qua";
+
+        document.getElementById("nv1").textContent = WISHLIST.nv1;
+        document.getElementById("nv2").textContent = WISHLIST.nv2;
+        document.getElementById("nv3").textContent = WISHLIST.nv3;
+      }
+
+      // ====== STARS BACKGROUND ======
+      const canvas = document.getElementById("stars");
+      const ctx = canvas.getContext("2d");
+      let W, H, stars;
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        createStars();
+      }
+      window.addEventListener("resize", resize);
+
+      function createStars() {
+        const count = Math.floor((W * H) / 12000);
+        stars = Array.from({ length: count }, () => ({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.4 + 0.3,
+          a: Math.random() * 0.8 + 0.2,
+          s: Math.random() * 0.4 + 0.05,
+        }));
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (const st of stars) {
+          st.a += (Math.random() - 0.5) * 0.06;
+          st.a = Math.max(0.12, Math.min(0.95, st.a));
+          ctx.beginPath();
+          ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${st.a})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      // ====== CONFETTI ======
+      const confettiBox = document.getElementById("confetti");
+      const confettiColors = [
+        "rgba(255,220,168,.92)",
+        "rgba(167,199,255,.92)",
+        "rgba(205,180,255,.92)",
+        "rgba(255,255,255,.88)",
+      ];
+
+      function createConfettiPiece(burst = false) {
+        const el = document.createElement("span");
+        const sizeW = Math.random() * 8 + 6;
+        const sizeH = Math.random() * 12 + 8;
+        el.style.width = sizeW + "px";
+        el.style.height = sizeH + "px";
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.background =
+          confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        el.style.opacity = (Math.random() * 0.35 + 0.55).toFixed(2);
+
+        const duration = burst
+          ? Math.random() * 2.2 + 1.4
+          : Math.random() * 5 + 6;
+        el.style.animationDuration = duration + "s";
+        el.style.animationDelay = Math.random() * 1.2 + "s";
+
+        el.style.transform = `translateY(-20px) rotate(${
+          Math.random() * 180
+        }deg)`;
+        confettiBox.appendChild(el);
+
+        setTimeout(() => el.remove(), (duration + 2.5) * 1000);
+      }
+
+      function startGentleConfetti() {
+        setInterval(() => {
+          for (let i = 0; i < 3; i++) createConfettiPiece(false);
+        }, 650);
+      }
+      function burstConfetti() {
+        for (let i = 0; i < 80; i++) createConfettiPiece(true);
+      }
+
+      // ====== MARQUEE ======
+      const marqueeTrack = document.getElementById("marqueeTrack");
+      function buildMarquee() {
+        const all = [...MARQUEE_TEXTS, ...MARQUEE_TEXTS];
+        marqueeTrack.innerHTML = all
+          .map((t) => `<div class="chip">✨ <b>${t}</b></div>`)
+          .join("");
+      }
+
+      // ====== IMAGES TRACK ======
+      const trackInner = document.getElementById("trackInner");
+      function buildImages() {
+        const list = [...IMAGES, ...IMAGES];
+        trackInner.innerHTML = list
+          .map(
+            (src) => `
+              <div class="photo">
+                <img src="${src}" alt="memory" />
+              </div>
+            `
+          )
+          .join("");
+      }
+
+      // ====== NAME ======
+      document.getElementById("name").textContent = BOY_NAME;
+
+      // ====== CANDLE BLOW ======
+      let blown = false;
+      const blowBtn = document.getElementById("blowBtn");
+      const flames = [
+        document.getElementById("flame1"),
+        document.getElementById("flame1a"),
+        document.getElementById("flame2"),
+        document.getElementById("flame2a"),
+        document.getElementById("flame3"),
+        document.getElementById("flame3a"),
+      ];
+
+      const modal = document.getElementById("modal");
+      const closeModal = document.getElementById("closeModal");
+      const okModal = document.getElementById("okModal");
+      function openModal() {
+        modal.classList.add("show");
+      }
+      function hideModal() {
+        modal.classList.remove("show");
+      }
+
+      blowBtn.addEventListener("click", () => {
+        if (blown) return;
+        flames.forEach((f) => f.classList.add("off"));
+        blown = true;
+        burstConfetti();
+        setTimeout(openModal, 450);
+      });
+      closeModal.addEventListener("click", hideModal);
+      okModal.addEventListener("click", hideModal);
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) hideModal();
+      });
+
+      // ====== LETTER TYPING ======
+      const openLetterBtn = document.getElementById("openLetterBtn");
+      const typingArea = document.getElementById("typingArea");
+      const signature = document.getElementById("signature");
+      let typed = false;
+
+      function typeText(text, speed = 22) {
+        typingArea.textContent = "";
+        signature.textContent = "";
+        let i = 0;
+        const timer = setInterval(() => {
+          typingArea.textContent += text[i] || "";
+          i++;
+          if (i >= text.length) {
+            clearInterval(timer);
+            signature.textContent = SIGNATURE_TEXT;
+          }
+        }, speed);
+      }
+
+      openLetterBtn.addEventListener("click", () => {
+        if (typed) return;
+        typed = true;
+        typeText(LETTER_TEXT, 22);
+      });
+
+      // ====== INIT ======
+      resize();
+      draw();
+      startGentleConfetti();
+      buildMarquee();
+      buildImages();
+      updateStats();
+      setInterval(updateStats, 60 * 1000);
+      // ====== MUSIC ======
+      const bgMusic = document.getElementById("bgMusic");
+      const musicBtn = document.getElementById("musicBtn");
+
+      // volume nhẹ nhàng
+      bgMusic.volume = 0.45;
+
+      // nhớ trạng thái bật/tắt
+      let musicOn = localStorage.getItem("musicOn") === "true";
+
+      function updateMusicBtn() {
+        musicBtn.textContent = musicOn ? "🔇 Tắt nhạc" : "🎵 Bật nhạc";
+      }
+
+      async function playMusic() {
+        try {
+          await bgMusic.play();
+          musicOn = true;
+          localStorage.setItem("musicOn", "true");
+          updateMusicBtn();
+        } catch (err) {
+          // trình duyệt chặn autoplay, không sao
+          musicOn = false;
+          localStorage.setItem("musicOn", "false");
+          updateMusicBtn();
+        }
+      }
+
+      function pauseMusic() {
+        bgMusic.pause();
+        musicOn = false;
+        localStorage.setItem("musicOn", "false");
+        updateMusicBtn();
+      }
+
+      // click button
+      musicBtn.addEventListener("click", () => {
+        if (musicOn) pauseMusic();
+        else playMusic();
+      });
+
+      // auto play nếu trước đó đã bật
+      updateMusicBtn();
+      if (musicOn) {
+        playMusic();
+      }
+    </script>
+  </body>
+</html>
